@@ -26,7 +26,7 @@
 		"clean": "rimraf dist",
 		"bower": "ncp bower_components dist/lib",
 		"build": "ncp src dist",
-		"watch": "onchange src/* -- run-s build",
+		"watch": "onchange src/**/* -- run-s build",
 		"serve": "browser-sync --no-notify start -s dist -f dist",
 		"test": "run-s clean build bower",
 		"postinstall": "bower i",
