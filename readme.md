@@ -6,6 +6,9 @@ https://arweave.net/KFuRkviGbpQdHiPdRRIifmoPnyrvFxjr3sXfrteIl8A
 
 ### Changelog
 ```
+v0.0.2 ()
+
+
 v0.0.1 (https://arweave.net/KFuRkviGbpQdHiPdRRIifmoPnyrvFxjr3sXfrteIl8A)
 - first commit
 ```
