@@ -1,6 +1,6 @@
 {
 	"name": "archive",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Archive is an Arweave archive explorer. Find the permaweb published by a wallet address.",
 	"homepage": "https://github.com/GoldZeus/archive",
 	"repository": "GoldZeus/archive",
