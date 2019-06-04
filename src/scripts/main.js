@@ -44,20 +44,11 @@ async function doSearch(address = '') {
 	$container.classList.remove('center-align');
 }
 
-
 async function getAllLinksByAddress(address) {
 	const query = {
-		op: 'and',
-		expr1: {
-			op: 'equals',
-			expr1: 'from',
-			expr2: address
-		},
-		expr2: {
-			op: 'equals',
-			expr1: 'Content-Type',
-			expr2: 'text/html'
-		}
+		op: 'equals',
+		expr1: 'from',
+		expr2: address
 	};
 	const res = await arweave.api.post('arql', query);
 
@@ -69,11 +60,15 @@ async function getAllLinksByAddress(address) {
 
 			tx.get('tags').forEach(tag => {
 				let key = tag.get('name', { decode: true, string: true });
-				let value = tag.get('value', { decode: true, string: true });
-				txRow[key.toLowerCase()] = value
+				txRow[key.toLowerCase()] = tag.get('value', { decode: true, string: true });
 			});
 
-			const data = tx.get('data', {decode: true, string: true});
+			let data = '';
+			if(txRow.hasOwnProperty('content-type')) {
+				if(txRow['content-type'] === 'text/html') {
+					data = tx.get('data', {decode: true, string: true});
+				}
+			}
 
 			txRow['id'] = linkId;
 			txRow['data'] = data;
@@ -87,9 +82,7 @@ async function getAllLinksByAddress(address) {
 		return false;
 	}
 
-	console.log(links);
-	const html = await createDomLinks.data(links);
-	$container.innerHTML = html;
+	$container.innerHTML = await createDomLinks.data(links);
 
 	return true;
 }
@@ -99,9 +92,15 @@ async function getAllLinksByAddress(address) {
 const createDomLinks = cw((links) => {
 	let html = ``;
 	links.forEach(link => {
+		if(link['content-type'] === undefined) {
+			return true;
+		}
+
 		let title = link.data.match(/<title[^>]*>([^<]+)<\/title>/);
 		if(title && title.length > 1) {
 			title = title[1];
+		} else if(link['content-type'] !== 'text/html') {
+			title = link['content-type'];
 		} else {
 			title = "untitledlink";
 		}
